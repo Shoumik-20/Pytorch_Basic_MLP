@@ -43,5 +43,13 @@ net = Net()
 loss_function = nn.CrossEntropyLoss()     # loss function
 optimizer = torch.optim.Adam(net.parameters(), lr = 0.01)   # Adam optimizer is used
 
+for epoch in range(3000):
+    net.zero_grad()        #set gradient to zero
+    out = net(train_X)     # output calculated by neural network
+    loss = loss_function( out, train_y)   # loss between output calculated and  expected output
+    loss.backward()
+    optimizer.step()    #optimize the weights
+    print(loss)
+
 
 print(net)
