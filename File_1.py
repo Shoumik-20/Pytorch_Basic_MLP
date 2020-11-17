@@ -5,6 +5,7 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 import pandas as pd
 import numpy as np
+from sklearn.model_selection import train_test_split
 
 class Net(nn.Module):
     def __init__(self):
@@ -28,7 +29,19 @@ iris_df= pd.DataFrame(data= np.c_[iris['data'], iris['target']],
                  columns= iris['feature_names'] + ['target'])
 
 iris_df['species'] = pd.Categorical.from_codes(iris.target, iris.target_names)
-print(iris_df)
+#print(iris_df)
+
+train_X, test_X, train_y, test_y = train_test_split(iris_df[iris_df.columns[0:4]].values, iris_df.target.values, test_size=0.25)
+
+train_X = Variable(torch.Tensor(train_X).float())
+test_X = Variable(torch.Tensor(test_X).float())
+train_y = Variable(torch.Tensor(train_y).long())
+test_y = Variable(torch.Tensor(test_y).long())
 
 net = Net()
+
+loss_function = nn.CrossEntropyLoss()     # loss function
+optimizer = torch.optim.Adam(net.parameters(), lr = 0.01)   # Adam optimizer is used
+
+
 print(net)
