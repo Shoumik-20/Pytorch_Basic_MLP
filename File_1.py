@@ -52,4 +52,22 @@ for epoch in range(3000):
     print(loss)
 
 
-print(net)
+#predict_out = net(test_X)
+#print(predict_out)
+#_, predict_y = torch.max(predict_out, 1)
+
+#print(iris_df.target.values)
+#print(test_y.data)
+#print(predict_y.data)
+
+
+with torch.no_grad():
+    for flower in test_y:
+        correct = 0
+        total = 0
+        predict_out = net(test_X)
+        _, predict_y = torch.max(predict_out, 1)
+        total += test_y.size(0)
+        correct += (predict_y == test_y).sum().item()
+
+print("Accuracy over the iris data set:", 100*(correct/total), "%")
